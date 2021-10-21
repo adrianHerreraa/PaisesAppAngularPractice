@@ -16,9 +16,9 @@ export class PorPaisComponent {
 
   constructor( private paisService: PaisService ){}
 
-  buscar(){
+  buscar( termino: string ){
     this.errorExist = false;
-    console.log(this.termino);
+    this.termino = termino;
 
     this.paisService.buscarPais(this.termino)
       .subscribe( (paises) => {
@@ -27,13 +27,7 @@ export class PorPaisComponent {
 
         if(paises.length <= 0){
           this.errorExist = true;
-          this.paisesFromTable = [];
         }
-
-        /*if(paises.values.length <= 0){
-          this.errorExist = true;
-          this.paisesFromTable = [];
-        }*/
 
         /*if(resp.status == 404){
           console.log('Parche de error por Kilian');
@@ -43,6 +37,11 @@ export class PorPaisComponent {
         this.errorExist = true;
         this.paisesFromTable = [];
       });
+  }
+
+  sugerencias( event: string ){
+    this.errorExist = false;
+    //TODO: Crear sugerencias.
   }
 
 }
