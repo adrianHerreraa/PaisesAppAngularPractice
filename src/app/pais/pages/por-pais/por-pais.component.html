@@ -1,17 +1,17 @@
-<h2>Por país</h2>
-<hr>
+<div class="animate__animated animate__fadeIn animate__fast">
+    <h2>Por país</h2>
+    <hr>
 
-<div class="row">
-    <div class="col">
-        <app-pais-input 
-            (onEnter)="buscar($event)" 
-            (onDebounce)="sugerencias($event)"
-            placeholder="Buscar país..." >
-        </app-pais-input>
+    <div class="row">
+        <div class="col">
+            <app-pais-input (onEnter)="buscar($event)" (onDebounce)="sugerencias($event)" placeholder="Buscar país...">
+            </app-pais-input>
+        </div>
     </div>
+
+    <hr>
 </div>
 
-<hr>
 
 <div *ngIf="errorExist" class="alert alert-danger">
     No se encontró nada con el término {{ termino }}.
@@ -19,6 +19,6 @@
 
 <div *ngIf="!errorExist" class="row">
     <div class="col">
-        <app-pais-tabla [paisesFromTable] ="paisesFromTable"></app-pais-tabla>
+        <app-pais-tabla [paisesFromTable]="paisesFromTable"></app-pais-tabla>
     </div>
 </div>
