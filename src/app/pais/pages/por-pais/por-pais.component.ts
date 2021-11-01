@@ -6,42 +6,75 @@ import { Country } from '../../interfaces/pais.interface';
   selector: 'app-por-pais',
   templateUrl: './por-pais.component.html',
   styles: [
-  ]
+    `
+      li {
+        cursor: pointer;
+      }
+    `,
+  ],
 })
+
 export class PorPaisComponent {
 
   termino: string = '';
+  
   errorExist: boolean = false;
+  
   paisesFromTable: Country[] = [];
 
-  constructor( private paisService: PaisService ){}
+  paisesSugerencias: Country[] = [];
 
-  buscar( termino: string ){
+  mostrarSugerencias: boolean = false;
+
+  constructor(private paisService: PaisService) {}
+
+  buscar(termino: string) {
+    this.mostrarSugerencias = false;
+
     this.errorExist = false;
     this.termino = termino;
-
-    this.paisService.buscarPais(this.termino)
-      .subscribe( (paises) => {
-        console.log(paises);
+  
+    this.paisService.buscarPais(this.termino).subscribe(
+      (paises) => {
         this.paisesFromTable = paises;
 
-        if(paises.length <= 0){
+        if (paises.length <= 0) {
           this.errorExist = true;
+          this.paisesFromTable = [];
         }
 
         /*if(resp.status == 404){
           console.log('Parche de error por Kilian');
           this.errorExist = true;
         } */
-      }, (err) => {
+      },
+      (err) => {
         this.errorExist = true;
         this.paisesFromTable = [];
-      });
+      }
+    );
   }
 
-  sugerencias( event: string ){
+  sugerencias(termino: string) {
     this.errorExist = false;
-    //TODO: Crear sugerencias.
+    this.termino = termino;
+    this.mostrarSugerencias = true;
+    this.paisService
+      .buscarPais(termino)
+      .subscribe(
+        (paises) => {
+          this.paisesSugerencias = paises.splice(0, 4)
+        },
+        (err) => {
+          this.paisesSugerencias = [];
+        },
+      );
+  }
+
+  buscarSugerido( termino: string ){
+    this.mostrarSugerencias = false;
+    this.paisesSugerencias = [];
+    this.buscar(termino);
   }
 
 }
